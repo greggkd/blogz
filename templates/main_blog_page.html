@@ -2,22 +2,24 @@
 
 {% block content %}
 
-<h1 align="center">Build a Blog</h1>
+<h1 align="center">blog posts!</h1>
 <form>
 </form>
 
-{% if entries|length == 0 %}
+{% if blogs|length == 0 %}
     <p>No Entries yet</p>
     {% else %}
 
         <ul>
-            {% for entry in entries%}
+            {% for blog in blogs%}
             <form>
                 <h2>
-                    <a href="/blog?id={{entry.id}}">{{entry.title}}</a>
+                    <a href="/blog?id={{blog.id}}">{{blog.title}}</a>
                 </h2>
+                    <p>{{blog.body}}
+                    <p class="post-author">written by: <a href="/blog?user={{users[blog.owner_id - 1].username}}">{{users[blog.owner_id - 1].username}}</a></p>
                 <br>
-               <label>{{entry.body}} </label>
+
                <hr />
             </form>
             {% endfor %}

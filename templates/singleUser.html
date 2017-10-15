@@ -1,17 +1,16 @@
 {% extends "base.html" %}
-
 {% block content %}
 
 
 
 {% for post in this_post%}
     <h1 align="center">
-        {{post.title}}
+        <a href="blog?id={{post.id}}">{{post.title}}</a>
     </h1>
         <label>{{post.body}}</label>
         <p class="post-author">written by <a href="/blog?user={{author}}">{{author}}</a></p>
+        <input type="hidden" name="owner_id" value ="{{author}}">
 
 {% endfor %}
 
 {% endblock %}
-        

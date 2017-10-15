@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+{% for user in users%}
+   <li><a href="/blog?user={{user.username}}">{{user.username}}
+       <input type="hidden" name="owner_id" value ="{{user.id}}">
+   </li>
+       
+{% endfor %}
+
+{% endblock %}
+        
