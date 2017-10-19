@@ -41,9 +41,10 @@ def require_login():
 @app.route('/')
 def index():
     
-    #if db.session['username']:        
-         users = User.query.all()
-         return render_template('home.html',users=users)
+    #if db.session['username']:   
+    print("inside index")     
+    users = User.query.all()
+    return render_template('home.html',users=users)
 
    
 
@@ -94,33 +95,16 @@ def signup():
             new_user = User.query.filter_by(username=username).first()
             session['username'] = username
             session['owner_id'] = new_user.id
-            #session['owner_id'] = id
             return redirect('/newpost')
         else:
             return "<h1>Duplicate User</h1>"
 
     return render_template('signup.html')
 
-"""
-@app.route('/', methods=['POST','GET'])
-def ahsomething():
-
-    owner = User.query.filter_by(username=session['username']).first()
-    
-    if request.method == 'POST':
-        blog_title = request.form['title']
-        new_blog = Blog(blog_title, owner)
-        db.session.add(new_blog)
-        db.session.commit()
-
-    blogss = Blog.query.filter_by(owner_id=owner).all()
-    return render_template('main_blog_page.html')
-    
-"""    
+  
 @app.route('/logout')
 def logout():
     del session['username']
-    #del session['owner_id']
     return redirect('/blog')
 
 @app.route('/blog', methods=['POST','GET'])
@@ -173,15 +157,8 @@ def newentry():
     title = str(request.form['title'])
     body = str(request.form['body'])
   
-    #id = session['owner_id']
-    print("before owner00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
     owner = User.query.filter_by(username=session['username']).first()
-    #if not owner:
-    #    return "<h1>hmmm</h1>"
-    #else:
-    #    return "<h1>" + owner[0].id + "</h1>"
-    #return "<h1>"+ str(id) + "</h1>"
-    print("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj")
+
     title_error =''
     body_error = ''
 
@@ -197,14 +174,12 @@ def newentry():
             body=body,body_error="Please fill in the body.",
             title_error="Please fill in the title")
     else:
-        print("mmmmmmmmmmmmmmmmmmmmmm")
         new_entry = Blog(title, body, owner)
         db.session.add(new_entry)
         db.session.commit()
 
-        print("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
-        this_post = Blog.query.filter_by(title=title,body=body).all()
-        return render_template('display_post.html',this_post=this_post)
+        this_post = Blog.query.filter_by(title=title,body=body).first()
+        return redirect('/blog?id={0}'.format(this_post.id))
         
 
 
